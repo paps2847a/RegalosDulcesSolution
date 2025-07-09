@@ -91,7 +91,7 @@ namespace LibreriaGenericaPropia.Generic
             return entity;
         }
 
-        public async Task<bool> UpdateAsync(IEnumerable<T> entity)
+        public async Task<bool> UpdateRangeAsync(IEnumerable<T> entity)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
             _dataContext.Set<T>().UpdateRange(entity);
@@ -110,7 +110,7 @@ namespace LibreriaGenericaPropia.Generic
             return await _dataContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> DeleteAsync(IEnumerable<T> entity)
+        public async Task<bool> DeleteRangeAsync(IEnumerable<T> entity)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
             _dataContext.Set<T>().RemoveRange(entity);

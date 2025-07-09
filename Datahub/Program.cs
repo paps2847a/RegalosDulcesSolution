@@ -1,4 +1,5 @@
-using System.Text.Json.Serialization;
+using Datahub.Extensions;
+using Datahub.Routes;
 
 namespace Datahub
 {
@@ -8,7 +9,13 @@ namespace Datahub
         {
             var builder = WebApplication.CreateSlimBuilder(args);
 
+            builder.Services.AddDataContext(builder.Configuration)
+                            .AddServices()
+                            .AddCustomMvcServices(builder.Configuration);
+
             var app = builder.Build();
+
+            app.MapCategoriaRoute();
 
             app.Run();
         }
