@@ -12,7 +12,7 @@ namespace Datahub.Extensions
     {
         public static IServiceCollection AddDataContext(this IServiceCollection data, IConfiguration config)
         {
-            data.AddDbContext<DataContext>(options =>
+            data.AddDbContextPool<DataContext>(options =>
             {
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection"), sqlServerOptionsAction: sqlOptions =>
                 {

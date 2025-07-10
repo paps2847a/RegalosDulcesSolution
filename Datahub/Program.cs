@@ -15,7 +15,9 @@ namespace Datahub
 
             var app = builder.Build();
 
-            app.MapCategoriaRoute();
+            app.MapCategoriaRoute()
+                .MapTamanoRoute()
+                .MapInventarioRoute();
 
             app.Run();
         }
