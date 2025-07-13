@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=5">
     <!-- Standard favicon for browsers -->
-    <link rel="icon" href="~/img/favicon-32x32.png" type="image/png" sizes="32x32">
-    <link rel="icon" href="~/img/favicon-16x16.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="~/../../img/favicon-32x32.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="~/../../img/favicon-16x16.png" type="image/png" sizes="16x16">
     <!-- Apple Touch Icon (iOS) -->
-    <link rel="apple-touch-icon" href="~/img/apple-touch-icon.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="~/../../img/apple-touch-icon.png" sizes="180x180">
     <!-- Android/Chrome (Progressive Web App) -->
-    <link rel="icon" href="~/img/favicon-192x192.png" type="image/png" sizes="192x192">
+    <link rel="icon" href="~/../../img/favicon-192x192.png" type="image/png" sizes="192x192">
     <!-- Call App Mode on ios devices -->
     <meta name="mobile-web-app-capable" content="yes">
     <!-- Remove Tap Highlight on Windows Phone IE -->
@@ -23,6 +23,7 @@
     <!-- Base css -->
     <link rel="stylesheet" media="screen, print" href="~/css/smartapp.css">
     <link rel="stylesheet" media="screen, print" href="~/css/sa-icons.css">
+    <link rel="stylesheet" media="screen, print" href="~/scripts/thirdparty/sweetalert/sweetalert2.min.css">
     <!-- Theme Style -->
     <link id="theme-style" rel="stylesheet" media="screen, print">
     <!-- Page specific CSS -->
@@ -265,16 +266,6 @@
             <main class="app-body">
                 <div class="app-content">
                     <div class="content-wrapper">
-                        <nav class="app-breadcrumb" aria-label="breadcrumb">
-                            <ol class="breadcrumb ms-0">
-                                <li class="breadcrumb-item">Design</li>
-                                <li class="breadcrumb-item">UI Components</li>
-                                <li class="breadcrumb-item">Core Elements</li>
-                                <li class="breadcrumb-item active" aria-current="page">Alerts</li>
-                            </ol>
-                        </nav>
-                        <h1 class="subheader-title"> Alerts <small> Provide contextual feedback messages for common user actions with a variety of customizable and flexible alert options. </small>
-                        </h1>
                         <div class="main-content">
                             <div class="row" id="sortable-grid">
                                 @RenderBody()
@@ -290,7 +281,7 @@
             <aside class="app-drawer js-app-drawer">
                 <button type="button" class="btn btn-system position-absolute top-0 end-0 z-2 overflow-hidden p-3" data-action="toggle-swap" data-toggleclass="open" data-target="aside.js-app-drawer" aria-label="Close">
                     <svg class="sa-icon sa-icon-2x">
-                        <use href="img/sprite.svg#x"></use>
+                        <use href="../../img/sprite.svg#x"></use>
                     </svg>
                 </button>
                 <div class="custom-scrollbar h-100 p-0">
@@ -313,18 +304,18 @@
                                             <div class="d-flex gap-1 flex-row align-items-center flex-wrap flex-shrink-0">
                                                 <button class="btn btn-icon fs-xl flex-shrink-0" type="button" data-bs-toggle="tooltip" data-bs-original-title="Attach Files or Photos" data-bs-placement="top">
                                                     <svg class="sa-icon sa-bold sa-icon-subtlelight">
-                                                        <use href="img/sprite.svg#file"></use>
+                                                        <use href="../../img/sprite.svg#file"></use>
                                                     </svg>
                                                 </button>
                                                 <button class="btn btn-icon fs-xl width-1 flex-shrink-0" type="button" data-bs-toggle="tooltip" data-bs-original-title="Voice" data-bs-placement="top">
                                                     <svg class="sa-icon sa-bold sa-icon-subtlelight">
-                                                        <use href="img/sprite.svg#mic"></use>
+                                                        <use href="../../img/sprite.svg#mic"></use>
                                                     </svg>
                                                 </button>
                                             </div>
                                             <button class="btn btn-icon fs-xl width-1 flex-shrink-0 ms-auto" type="button" data-bs-toggle="tooltip" data-bs-original-title="Send" data-bs-placement="top">
                                                 <svg class="sa-icon sa-bold sa-icon-subtlelight sa-icon-2x">
-                                                    <use href="img/sprite.svg#arrow-up-circle"></use>
+                                                    <use href="../../img/sprite.svg#arrow-up-circle"></use>
                                                 </svg>
                                             </button>
                                         </div>
@@ -343,14 +334,14 @@
                     </h5>
                     <button type="button" class="btn btn-system ms-auto" data-action="toggle-swap" data-toggleclass="open" data-target="aside.js-drawer-settings" aria-label="Close">
                         <svg class="sa-icon sa-icon-2x">
-                            <use href="img/sprite.svg#x"></use>
+                            <use href="../../img/sprite.svg#x"></use>
                         </svg>
                     </button>
                 </div>
                 <div class="custom-scrollbar h-100">
                     <div class="info-container"> Unlock limitless design potential with 16+ layout combinations and extensive customization options—tailor your dashboard to fit your exact needs. <button type="button" class="btn btn-sm btn-outline-secondary ms-1" data-action="playsound" data-soundpath="media/sound/" data-soundfile="settings-voice.mp3" aria-label="Play Settings Voice">
                             <svg class="sa-icon">
-                                <use href="img/sprite.svg#volume-2"></use>
+                                <use href="../../img/sprite.svg#volume-2"></use>
                             </svg>
                         </button>
                     </div>
@@ -454,6 +445,8 @@
         <script src="~/scripts/smartNavigation.js"></script>
         <script src="~/scripts/smartFilter.js"></script>
         <script src="~/scripts/thirdparty/bootstrap/bootstrap.bundle.js"></script>
+        <script src="~/scripts/thirdparty/sweetalert/sweetalert2.all.min.js"></script>
+        <script src="~/scripts/jquery-3.7.1.min.js"></script>
         <!-- Dependable scripts -->
         <script src="~/scripts/thirdparty/sortable/sortable.js"></script>
         <!-- Optional scripts -->

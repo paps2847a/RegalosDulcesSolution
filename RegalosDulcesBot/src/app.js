@@ -1,25 +1,36 @@
 import { join } from 'path'
-import { createBot, createProvider, createFlow, addKeyword, utils } from '@builderbot/bot'
+import { createBot, createProvider, createFlow, addKeyword, utils, EVENTS } from '@builderbot/bot'
 import { JsonFileDB as Database } from '@builderbot/database-json'
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
 
-const PORT = process.env.PORT ?? 3008
+const PORT = process.env.PORT ?? 3008;
 
-const welcomeFlow = addKeyword(['hi', 'hello', 'hola'])
-    .addAnswer(`🙌 Hello welcome to this *Chatbot*`)
-    .addAnswer(
-        [
-            'I share with you the following links of interest about the project',
-            '👉 *doc* to view the documentation',
-        ].join('\n'),
-        { delay: 800, capture: true },
-        async (ctx, { fallBack }) => {
-            if (!ctx.body.toLocaleLowerCase().includes('doc')) {
-                return fallBack('You should type *doc*')
-            }
-            return
+const welcomeFlow = addKeyword(["Hola", "Buneas"]).addAnswer([
+    "Hola soy RegalosBot!, puedes interactuar conmigo de la siguiente forma:",
+    "1 - Para hacer una orden",
+    "2 - Para saber los precios de nuestras tortas",
+    "3 - Para Contactarte con un humano"
+]);
+
+const contactFlow = addKeyword(["3"])
+    .addAnswer("Se ha avisado que deseas contactar con un agente humano")
+    .addAction(async (ctx, {}) => {
+
+        let msgData = {
+            number: "584145107608",
+            message: "El Cliente Culo desea hablar con una persona"
+        };
+
+        let settings = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(msgData)
         }
-    )
+        let response = await fetch('http://localhost:3008/v1/messages', settings);
+        let data = await response.json();
+    });
 
 const registerFlow = addKeyword(utils.setEvent('REGISTER_FLOW'))
     .addAnswer(`What is your name?`, { capture: true }, async (ctx, { state }) => {
@@ -44,7 +55,7 @@ const fullSamplesFlow = addKeyword(['samples', utils.setEvent('SAMPLES')])
     })
 
 const main = async () => {
-    const adapterFlow = createFlow([welcomeFlow, registerFlow, fullSamplesFlow])
+    const adapterFlow = createFlow([welcomeFlow, registerFlow, fullSamplesFlow, contactFlow])
     
     const adapterProvider = createProvider(Provider)
     
@@ -59,8 +70,8 @@ const main = async () => {
     adapterProvider.server.post(
         '/v1/messages',
         handleCtx(async (bot, req, res) => {
-            const { number, message, urlMedia } = req.body
-            await bot.sendMessage(number, message, { media: urlMedia ?? null })
+            const { number, message } = req.body
+            await bot.sendMessage(number, message)
             return res.end('sended')
         })
     )

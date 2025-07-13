@@ -54,7 +54,7 @@ namespace DataLogic.Services
         public async Task<int> Count(Expression<Func<Tamano, bool>>? predicado = null)
         {
             if (predicado is null)
-                await _svc.CountAsync();
+                return await _svc.CountAsync();
 
             return await _svc.CountAsync(predicado!);
         }

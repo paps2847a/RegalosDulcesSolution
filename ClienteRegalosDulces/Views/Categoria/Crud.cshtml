@@ -1,0 +1,72 @@
+﻿@model DataModel.Tables.Categoria
+@{
+    ViewData["Title"] = "Categoria Registro/Edicion";
+}
+
+<nav class="app-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb ms-0">
+        <li class="breadcrumb-item">Categoria</li>
+        <li class="breadcrumb-item" aria-current="page">Datos General</li>
+    </ol>
+</nav>
+<h1 class="subheader-title position-relative">
+    Datos Generales
+    <small> detalle de datos de Categoria</small>
+</h1>
+<div class="main-content">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="Save" asp-controller="Categoria" method="post">
+                        <input type="hidden" asp-for="IdCat" value="@Model.IdCat">
+                        <input type="hidden" asp-for="RegDat" value="@Model.RegDat">
+                        <input type="hidden" asp-for="Token" value="@Model.Token">
+                        <div class="row mb-3">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="form-label">Nombre de Categoria</label>
+                                    <input type="text" class="form-control" asp-for="DesCat" />
+                                    <span asp-validation-for="DesCat" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class="form-label">Estado</label>
+                                    <select class="form-control" id="IsAct" asp-for="IsAct">
+                                        @if (Model.IsAct.Value)
+                                        {
+                                            <option selected value="true">Activo</option>
+                                            <option value="false">Inactivo</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="true">Activo</option>
+                                            <option selected value="false">Inactivo</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" mb-3>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit">Guardar</button>
+                                    <a href="@Url.Action("Index", "Categoria")" class="btn btn-secondary">Cancelar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

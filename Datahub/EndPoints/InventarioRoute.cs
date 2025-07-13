@@ -3,22 +3,21 @@ using DataModel.Models;
 using DataModel.Tables;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Datahub.Routes
+namespace Datahub.EndPoints
 {
-    public static class InventarioRoute
+    public static class InventarioEndPoint
     {
-
-        public static IEndpointRouteBuilder MapInventarioRoute(this IEndpointRouteBuilder route)
+        public static IEndpointRouteBuilder MapInventarioEndPoint(this IEndpointRouteBuilder EndPoint)
         {
-            var routeData = route.MapGroup("/api/inventario");
+            var EndPointData = EndPoint.MapGroup("/api/inventario");
             
-            routeData.MapPost("getall", async ([FromBody] Filter data, IInventarioService _svc) =>
+            EndPointData.MapPost("getall", async ([FromBody] Filter data, IInventarioService _svc) =>
             {
                 var Inventarios = await _svc.GetAll(data);
                 return Results.Ok(new Responses() { Data = Inventarios });
             });
 
-            routeData.MapGet("get/{id:int}", async (int id, IInventarioService _svc) =>
+            EndPointData.MapGet("get/{id:int}", async (int id, IInventarioService _svc) =>
             {
                 var Inventario = await _svc.GetById(id);
                 if (Inventario is null)
@@ -27,7 +26,7 @@ namespace Datahub.Routes
                 return Results.Ok(new Responses() { Data = Inventario });
             });
 
-            routeData.MapPost("new", async ([FromBody] Inventario data, IInventarioService _svc) =>
+            EndPointData.MapPost("new", async ([FromBody] Inventario data, IInventarioService _svc) => 
             {
                 var Inventario = await _svc.Add(data);
                 if(Inventario.IdInv == 0)
@@ -36,7 +35,7 @@ namespace Datahub.Routes
                 return Results.Ok(new Responses() { Data = Inventario });
             });
 
-            routeData.MapPost("upd", async ([FromBody] Inventario data, IInventarioService _svc) =>
+            EndPointData.MapPost("upd", async ([FromBody] Inventario data, IInventarioService _svc) =>
             {
                 var Inventario = await _svc.Upd(data);
                 if (Inventario.IdInv == 0)
@@ -45,7 +44,7 @@ namespace Datahub.Routes
                 return Results.Ok(new Responses() { Data = Inventario });
             });
 
-            routeData.MapPost("del", async ([FromBody] Inventario data, IInventarioService _svc) =>
+            EndPointData.MapPost("del", async ([FromBody] Inventario data, IInventarioService _svc) =>
             {
                 var result = await _svc.Del(data);
                 if (!result)
@@ -53,9 +52,9 @@ namespace Datahub.Routes
                 return Results.Ok(new Responses() { Data = data });
             });
 
-            routeData.MapGet("count", async (IInventarioService _svc) => new Responses() { Data = await _svc.Count() });
+            EndPointData.MapGet("count", async (IInventarioService _svc) => new Responses() { Data = await _svc.Count() });
 
-            return routeData;
+            return EndPoint;
         }
     }
 }

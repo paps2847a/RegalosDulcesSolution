@@ -1,1 +1,116 @@
-[]
+[
+  {
+    "ref": "1d8bbab6-10e4-4ba8-a325-70fe5abaa2e8",
+    "keyword": "03be404abc2b0cb76b47de619c3c8593",
+    "answer": "3",
+    "options": {},
+    "from": "584145107608",
+    "refSerialize": "7af65864494b12f0f7ef00589f4d3979"
+  },
+  {
+    "ref": "ans_953b8a54-3975-43ac-a6b3-062c2f608b56",
+    "keyword": "key_5532d346-8a48-494d-b7ae-951d03bd8db8",
+    "answer": "Se ha avisado que deseas contactar con un agente humano",
+    "options": {
+      "buttons": [],
+      "capture": false,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "ad0f0a4edcb042c26951bc81d517f67b",
+    "from": "584145107608"
+  },
+  {
+    "ref": "ans_85c97cb3-f707-4064-a211-65239a22d7c0",
+    "keyword": "ans_953b8a54-3975-43ac-a6b3-062c2f608b56",
+    "answer": "__call_action__",
+    "options": {
+      "buttons": [],
+      "capture": false,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "0c2fafd1a6d32c5732dc6ac45c1ce56b",
+    "from": "584145107608"
+  },
+  {
+    "ref": "4b970319-ec77-45e3-a1a9-44615b316d44",
+    "keyword": "0c2fafd1a6d32c5732dc6ac45c1ce56b",
+    "answer": "3",
+    "options": {},
+    "from": "584145107608",
+    "refSerialize": "7af65864494b12f0f7ef00589f4d3979"
+  },
+  {
+    "ref": "ans_953b8a54-3975-43ac-a6b3-062c2f608b56",
+    "keyword": "key_5532d346-8a48-494d-b7ae-951d03bd8db8",
+    "answer": "Se ha avisado que deseas contactar con un agente humano",
+    "options": {
+      "buttons": [],
+      "capture": false,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "ad0f0a4edcb042c26951bc81d517f67b",
+    "from": "584145107608"
+  },
+  {
+    "ref": "ans_85c97cb3-f707-4064-a211-65239a22d7c0",
+    "keyword": "ans_953b8a54-3975-43ac-a6b3-062c2f608b56",
+    "answer": "__call_action__",
+    "options": {
+      "buttons": [],
+      "capture": false,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "0c2fafd1a6d32c5732dc6ac45c1ce56b",
+    "from": "584145107608"
+  },
+  {
+    "ref": "853b71f3-c714-496b-a6d1-81fa1805730e",
+    "keyword": "0c2fafd1a6d32c5732dc6ac45c1ce56b",
+    "answer": "3",
+    "options": {},
+    "from": "584145107608",
+    "refSerialize": "7af65864494b12f0f7ef00589f4d3979"
+  },
+  {
+    "ref": "ans_953b8a54-3975-43ac-a6b3-062c2f608b56",
+    "keyword": "key_5532d346-8a48-494d-b7ae-951d03bd8db8",
+    "answer": "Se ha avisado que deseas contactar con un agente humano",
+    "options": {
+      "buttons": [],
+      "capture": false,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "ad0f0a4edcb042c26951bc81d517f67b",
+    "from": "584145107608"
+  },
+  {
+    "ref": "ans_85c97cb3-f707-4064-a211-65239a22d7c0",
+    "keyword": "ans_953b8a54-3975-43ac-a6b3-062c2f608b56",
+    "answer": "__call_action__",
+    "options": {
+      "buttons": [],
+      "capture": false,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "0c2fafd1a6d32c5732dc6ac45c1ce56b",
+    "from": "584145107608"
+  }
+]

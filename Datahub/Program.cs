@@ -1,5 +1,5 @@
+using Datahub.EndPoints;
 using Datahub.Extensions;
-using Datahub.Routes;
 
 namespace Datahub
 {
@@ -15,9 +15,9 @@ namespace Datahub
 
             var app = builder.Build();
 
-            app.MapCategoriaRoute()
-                .MapTamanoRoute()
-                .MapInventarioRoute();
+            app.MapCategoriaEndPoint()
+                .MapInventarioEndPoint()
+                .MapTamanoEndPoint();
 
             app.Run();
         }

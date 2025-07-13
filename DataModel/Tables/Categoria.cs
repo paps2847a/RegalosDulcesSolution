@@ -9,7 +9,7 @@ namespace DataModel.Tables
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdCat { get; set; }
-        [MaxLength(50)]
+        [Required(ErrorMessage = "Este Campo es necesitado")]
         public string DesCat { get; set; } = "-";
         public bool? IsAct { get; set; } = true;
         public DateTime? RegDat { get; set; } = DateTime.Now;

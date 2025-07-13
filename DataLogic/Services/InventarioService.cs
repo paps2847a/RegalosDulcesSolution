@@ -3,6 +3,7 @@ using DataLogic.Services.Base;
 using DataModel.Models;
 using DataModel.Tables;
 using DataPersistance;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 
@@ -54,7 +55,7 @@ namespace DataLogic.Services
         public async Task<int> Count(Expression<Func<Inventario, bool>>? predicado = null)
         {
             if (predicado is null)
-                await _svc.CountAsync();
+                return await _svc.CountAsync();
 
             return await _svc.CountAsync(predicado!);
         }
@@ -62,7 +63,7 @@ namespace DataLogic.Services
         public async Task<IEnumerable<Inventario>> GetAll(Filter filter)
         {
             if(filter.parameters.Count == 0)
-                return await _svc.GetAllAsync();
+                return await _svc.GetAllAsync(include: x => x.Include(x => x.Categoria));
 
             string _op = filter.parameters.ContainsKey("op") ? filter.parameters["op"].ToString() : "-";
             string _val = filter.parameters.ContainsKey("data") ? filter.parameters["val"].ToString() : "-";

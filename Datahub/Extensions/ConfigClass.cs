@@ -62,9 +62,9 @@ namespace Datahub.Extensions
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddScoped<ITamanoService, TamanoService>();
-            services.AddScoped<IInventarioService, InventarioService>();
-            services.AddScoped<ICategoriaService, CategoriaService>();
+            services.AddSingleton<ITamanoService, TamanoService>();
+            services.AddSingleton<IInventarioService, InventarioService>();
+            services.AddSingleton<ICategoriaService, CategoriaService>();
 
             return services;
         }

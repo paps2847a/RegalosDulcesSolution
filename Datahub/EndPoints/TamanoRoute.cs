@@ -3,22 +3,21 @@ using DataModel.Models;
 using DataModel.Tables;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Datahub.Routes
+namespace Datahub.EndPoints
 {
-    public static class TamanoRoute
+    public static class TamanoEndPoint
     {
-
-        public static IEndpointRouteBuilder MapTamanoRoute(this IEndpointRouteBuilder route)
+        public static IEndpointRouteBuilder MapTamanoEndPoint(this IEndpointRouteBuilder EndPoint)
         {
-            var routeData = route.MapGroup("/api/tamano");
+            var EndPointData = EndPoint.MapGroup("/api/tamano");
             
-            routeData.MapPost("getall", async ([FromBody] Filter data, ITamanoService _svc) =>
+            EndPointData.MapPost("getall", async ([FromBody] Filter data, ITamanoService _svc) =>
             {
                 var Tamanos = await _svc.GetAll(data);
                 return Results.Ok(new Responses() { Data = Tamanos });
             });
 
-            routeData.MapGet("get/{id:int}", async (int id, ITamanoService _svc) =>
+            EndPointData.MapGet("get/{id:int}", async (int id, ITamanoService _svc) =>
             {
                 var Tamano = await _svc.GetById(id);
                 if (Tamano is null)
@@ -27,7 +26,7 @@ namespace Datahub.Routes
                 return Results.Ok(new Responses() { Data = Tamano });
             });
 
-            routeData.MapPost("new", async ([FromBody] Tamano data, ITamanoService _svc) =>
+            EndPointData.MapPost("new", async ([FromBody] Tamano data, ITamanoService _svc) =>
             {
                 var Tamano = await _svc.Add(data);
                 if(Tamano.IdTam == 0)
@@ -36,7 +35,7 @@ namespace Datahub.Routes
                 return Results.Ok(new Responses() { Data = Tamano });
             });
 
-            routeData.MapPost("upd", async ([FromBody] Tamano data, ITamanoService _svc) =>
+            EndPointData.MapPost("upd", async ([FromBody] Tamano data, ITamanoService _svc) =>
             {
                 var Tamano = await _svc.Upd(data);
                 if (Tamano.IdTam == 0)
@@ -45,7 +44,7 @@ namespace Datahub.Routes
                 return Results.Ok(new Responses() { Data = Tamano });
             });
 
-            routeData.MapPost("del", async ([FromBody] Tamano data, ITamanoService _svc) =>
+            EndPointData.MapPost("del", async ([FromBody] Tamano data, ITamanoService _svc) =>
             {
                 var result = await _svc.Del(data);
                 if (!result)
@@ -53,9 +52,9 @@ namespace Datahub.Routes
                 return Results.Ok(new Responses() { Data = data });
             });
 
-            routeData.MapGet("count", async (ITamanoService _svc) => new Responses() { Data = await _svc.Count() });
+            EndPointData.MapGet("count", async (ITamanoService _svc) => new Responses() { Data = await _svc.Count() });
 
-            return routeData;
+            return EndPoint;
         }
     }
 }

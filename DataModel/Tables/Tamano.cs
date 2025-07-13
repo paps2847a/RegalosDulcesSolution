@@ -10,7 +10,9 @@ namespace DataModel.Tables
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdTam { get; set; }
         [MaxLength(50)]
+        [Required(ErrorMessage = "Este campo es necesario")]
         public string DesTam { get; set; } = "-";
+        [Required(ErrorMessage = "Este campo es necesario")]
         public decimal? VendTam { get; set; }
         public bool? IsAct { get; set; } = true;
         public DateTime? RegDat { get; set; } = DateTime.Now;

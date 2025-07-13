@@ -1,0 +1,184 @@
+﻿@{
+    ViewData["Title"] = "Pantalla Principal";
+}
+
+<nav class="app-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb ms-0">
+        <li class="breadcrumb-item">Inventario</li>
+        <li class="breadcrumb-item" aria-current="page">Pantalla de Inicio</li>
+    </ol>
+</nav>
+<h1 class="subheader-title position-relative">
+    Listado de Inventario
+</h1>
+<div class="main-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-md-auto ms-auto">
+                            <a href="@Url.Action("Crud", "Inventario", new { id = 0 })" target="_blank" class="btn btn-primary">Nuevo +</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table id="tablaBase" class="table table-striped" role="grid" aria-describedby="dt-basic-example_info">
+                                <thead>
+                                    <tr>
+                                        <th>Elemento</th>
+                                        <th>Categoria</th>
+                                        <th>Prec. Compra</th>
+                                        <th>Prec. Venta</th>
+                                        <th style="width:3%">Estado</th>
+                                        <th style="width:3%">Accion</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Elemento</th>
+                                        <th>Categoria</th>
+                                        <th>Prec. Compra</th>
+                                        <th>Prec. Venta</th>
+                                        <th style="width:3%">Estado</th>
+                                        <th style="width:3%">Accion</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="~/scripts/thirdparty/datatables/datatables.min.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script src="~/scripts/thirdparty/datatables/dataTables.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            let par = {
+                parameters: {}
+            };
+
+           let table = $('#tablaBase').DataTable({
+                "responsive": true,
+                "dom": "<'row mb-3'<'col-sm-12 col-md-6 d-flex align-items-center justify-content-start'fB><'col-sm-12 col-md-6 d-flex align-items-center justify-content-end'l>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                buttons: [
+                ],
+                "ajax": {
+                    "url": '@Url.Action("GetData", "Inventario")', "contentType": "application/json", "dataSrc": 'data', "type": 'POST', "data": function () { return JSON.stringify(par) }
+                },
+                "order": [[0, 'desc']],
+                "initComplete": function (settings, json) {
+                    $('#rwCou').text('( ' + json.data.length + ' )');
+                },
+                "columnDefs": [{
+                    "targets": -1, "data": null,
+                    "defaultContent": ""
+                }],
+                "columns": [
+                    { 'data': 'desInv' },
+                    { 'data': 'categoria.desCat' },
+                    { 'data': 'compInv' },
+                    { 'data': 'vendInv' },
+                    { 'data': 'isAct', "render": function (data, type, row) {
+                        return row['isAct'] == true ? 'Activo' : 'Inactivo'}
+                    },
+                    {
+                        'data': "null", "render": function (data, type, row) {
+                            return `<div class="btn-group">
+                                        <button type="button" class="btn btn-info rounded-circle btn-icon" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg class="sa-icon sa-bold sa-icon-light">
+                                                <use href="../../img/sprite.svg#plus-circle"></use>
+                                            </svg>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item btnDet" href="javascript:void(0)">Detalles</a>
+                                            <a class="dropdown-item btnDel" href="javascript:void(0)">Borrar</a>
+                                        </div>
+                                    </div>`;
+                        }
+                    }]
+            });
+
+            $('#tablaBase tbody').on('click', '.btnDel', function () {
+                let row = $(this).closest('tr');
+                if (row.hasClass('child')) { row = row.prev(); }
+                let data = table.row(row).data();
+
+                try {
+                    let x = {
+                        parameters: {
+                            'id': data.idInv
+                        }
+                    };
+
+                    Swal.fire({
+                        title: 'Esta usted seguro?',
+                        text: "No podrás revertir esto!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Procesar',
+                        showLoaderOnConfirm: true,
+                        preConfirm: (r) => {
+                            return fetch('@Url.Action("Delete", "Inventario")', {
+                                method: "POST",
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(x)
+                                }).then(response => {
+                                    if (!response.ok) {
+                                        throw new Error(response.statusText)
+                                    }
+                                    return response.json()
+                                }).catch(error => {
+                                    Swal.showValidationMessage(`Request failed: ${error}`)
+                                })
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        let r = result.value;
+                        if (r.rs == "ok") {
+                            Swal.fire('Proceso', 'Datos borrados con exito', 'success');
+                            table.ajax.reload(function () {
+                                $("#rwCou").text((`${table.rows().count()}`));
+                            });
+                        } else {
+                            Swal.fire('Proceso', r.msg != '-' ? r.msg : 'Disculpe, el procesado no puede ser completado', 'error');
+                            table.ajax.reload(function () {
+                                $("#rwCou").text((`${table.rows().count()}`));
+                            });
+                        }
+                    });
+                } catch (e) {
+                    console.log(e);
+                };
+            });
+
+            $('#tablaBase tbody').on('click', '.btnDet', function () {
+                let row = $(this).closest('tr');
+                if (row.hasClass('child')) { row = row.prev(); }
+                let data = table.row(row).data();
+
+                let url = '@Url.Action("Crud", "Inventario")/' + data.idInv;
+                let win = window.open(url, '_blank');
+                win.focus();
+            });
+
+        });
+    </script>
+}

@@ -3,22 +3,21 @@ using DataModel.Models;
 using DataModel.Tables;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Datahub.Routes
+namespace Datahub.EndPoints
 {
-    public static class CategoriaRoute
+    public static class CategoriaEndPoint
     {
-
-        public static IEndpointRouteBuilder MapCategoriaRoute(this IEndpointRouteBuilder route)
+        public static IEndpointRouteBuilder MapCategoriaEndPoint(this IEndpointRouteBuilder EndPoint)
         {
-            var routeData = route.MapGroup("/api/categoria");
+            var EndPointData = EndPoint.MapGroup("/api/categoria");
             
-            routeData.MapPost("getall", async ([FromBody] Filter data, ICategoriaService _svc) =>
+            EndPointData.MapPost("getall", async ([FromBody] Filter data, ICategoriaService _svc) =>
             {
                 var categorias = await _svc.GetAll(data);
                 return Results.Ok(new Responses() { Data = categorias });
             });
 
-            routeData.MapGet("get/{id:int}", async (int id, ICategoriaService _svc) =>
+            EndPointData.MapGet("get/{id:int}", async (int id, ICategoriaService _svc) =>
             {
                 var categoria = await _svc.GetById(id);
                 if (categoria is null)
@@ -27,7 +26,7 @@ namespace Datahub.Routes
                 return Results.Ok(new Responses() { Data = categoria });
             });
 
-            routeData.MapPost("new", async ([FromBody] Categoria data, ICategoriaService _svc) =>
+            EndPointData.MapPost("new", async ([FromBody] Categoria data, ICategoriaService _svc) =>
             {
                 var categoria = await _svc.Add(data);
                 if(categoria.IdCat == 0)
@@ -36,7 +35,7 @@ namespace Datahub.Routes
                 return Results.Ok(new Responses() { Data = categoria });
             });
 
-            routeData.MapPost("upd", async ([FromBody] Categoria data, ICategoriaService _svc) =>
+            EndPointData.MapPost("upd", async ([FromBody] Categoria data, ICategoriaService _svc) =>
             {
                 var categoria = await _svc.Upd(data);
                 if (categoria.IdCat == 0)
@@ -45,7 +44,7 @@ namespace Datahub.Routes
                 return Results.Ok(new Responses() { Data = categoria });
             });
 
-            routeData.MapPost("del", async ([FromBody] Categoria data, ICategoriaService _svc) =>
+            EndPointData.MapPost("del", async ([FromBody] Categoria data, ICategoriaService _svc) =>
             {
                 var result = await _svc.Del(data);
                 if (!result)
@@ -53,9 +52,9 @@ namespace Datahub.Routes
                 return Results.Ok(new Responses() { Data = data });
             });
 
-            routeData.MapGet("count", async (ICategoriaService _svc) => new Responses() { Data = await _svc.Count() });
+            EndPointData.MapGet("count", async (ICategoriaService _svc) => new Responses() { Data = await _svc.Count() });
 
-            return routeData;
+            return EndPoint;
         }
     }
 }
