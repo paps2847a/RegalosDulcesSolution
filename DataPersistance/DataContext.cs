@@ -12,5 +12,6 @@ namespace DataPersistance
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Inventario> Inventarios { get; set; }
         public DbSet<Tamano> Tamanos { get; set; }
+        public DbSet<WsGroup> WsGroups { get; set; }
     }
 }

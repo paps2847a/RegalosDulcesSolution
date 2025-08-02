@@ -65,8 +65,9 @@ namespace ClienteRegalosDulces
         {
             return HttpPolicyExtensions
                 .HandleTransientHttpError()
+                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
         }
 
         // Política de Circuit Breaker
@@ -74,7 +75,8 @@ namespace ClienteRegalosDulces
         {
             return HttpPolicyExtensions
                 .HandleTransientHttpError()
-                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
+                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                .CircuitBreakerAsync(4, TimeSpan.FromSeconds(30));
         }
     }
 }

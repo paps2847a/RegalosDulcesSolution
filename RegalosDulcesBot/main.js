@@ -1,0 +1,71 @@
+const { Client, LocalAuth } = require('whatsapp-web.js');
+const qrcode = require('qrcode-terminal');
+const packageJson = require('./package-lock.json');
+const { SendPostPayloads, sleep } = require('./utilities/utilsProp.js'); // Assuming this is the correct path to your utility function
+const apiUrl = packageJson.apiUrl || 'http://localhost:3000'; // Default to localhost if not specified
+
+const client = new Client({
+    authStrategy: new LocalAuth()
+});
+
+client.on('ready', async () => {
+
+    //Con esto deberia de hacer un endpoint api para sincronizar datos de grupos con los de la db
+    let contacts = await client.getContacts();
+    let groups = contacts.filter(contact => contact.id.user.includes("-"));
+    await SendPostPayloads(apiUrl, 'wsgroup', 'new-api', groups);
+
+    console.log('Client is ready!');
+});
+
+client.on('message', async (msg) => {
+
+    if(msg.body === 'hola')
+    {
+        const opciones = [
+            "1. /precios - Para Recibir la lista de precios de los biscochos por tamano.",
+            "2. /orden - Para que describas un poco sobre como quieres tu torta.",
+            "3. /lista - Para que puedas ver los precios de nuestros diferentes postres ya preparados.",
+            "4. /contacto - Para contactar con un administrador."
+        ];
+        await msg.reply(`Bienvenido a regalos bot, soy el asistente automatico.Te presento las opciones que puedes usar:`);
+        sleep(700);
+        await msg.reply(opciones.join('\n'));
+    }
+
+    if(msg.body === '/precios' || msg.body === 'precios')
+    {
+        await msg.reply(`Espera un momento por favor, estoy buscando los precios...`);
+        let tamanosTortas = await SendPostPayloads(apiUrl, 'tamano', 'getall', {});
+        if(tamanosTortas.length === 0){
+            await msg.reply(`Lo siento, no se encontraron tamanos de tortas.`);
+            return;
+        }
+        let precios = tamanosTortas.map(tamano => `${tamano.desTam} - $${tamano.vendTam}`).join('\n');
+        await msg.reply(`Estos son los precios de los biscochos por tamano:\n${precios}`);
+        sleep(700);
+        await msg.reply(`Si quieres hacer un pedido, por favor escribe /orden.`);
+    }
+
+    if(msg.body === '/orden' || msg.body === 'orden')
+    {
+        await msg.reply(`Por favor, describe como quieres tu torta y te ayudare a crearla.`);
+    }
+
+    if(msg.body === '/lista' || msg.body === 'lista')
+    {
+    }
+
+    if(msg.body === '/contacto' || msg.body === 'contacto')
+    {
+        await msg.reply("Tu solicitud ha sido recibida, dentro de poco alguien se estara contactando contigo.");
+    }
+
+    console.log("Mensaje recibido: ", msg.body);
+});
+
+client.on('qr', qr => {
+    qrcode.generate(qr, {small: true});
+});
+
+client.initialize();

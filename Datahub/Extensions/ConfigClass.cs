@@ -1,6 +1,4 @@
-﻿
-
-using DataLogic.Services;
+﻿using DataLogic.Services;
 using DataPersistance;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -62,9 +60,10 @@ namespace Datahub.Extensions
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddSingleton<ITamanoService, TamanoService>();
-            services.AddSingleton<IInventarioService, InventarioService>();
-            services.AddSingleton<ICategoriaService, CategoriaService>();
+            services.AddScoped<ITamanoService, TamanoService>();
+            services.AddScoped<IInventarioService, InventarioService>();
+            services.AddScoped<ICategoriaService, CategoriaService>();
+            services.AddScoped<IWsGroupService, WsGroupService>();
 
             return services;
         }

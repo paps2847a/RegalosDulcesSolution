@@ -10,14 +10,15 @@ namespace Datahub
             var builder = WebApplication.CreateSlimBuilder(args);
 
             builder.Services.AddDataContext(builder.Configuration)
-                            .AddServices()
-                            .AddCustomMvcServices(builder.Configuration);
+                            .AddCustomMvcServices(builder.Configuration)
+                            .AddServices();
 
             var app = builder.Build();
 
             app.MapCategoriaEndPoint()
-                .MapInventarioEndPoint()
-                .MapTamanoEndPoint();
+               .MapInventarioEndPoint()
+               .MapWsGroupEndPoint()
+               .MapTamanoEndPoint();
 
             app.Run();
         }
