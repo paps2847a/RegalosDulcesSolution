@@ -1,3 +1,2 @@
-2025/08/02-13:21:39.948 330 Reusing MANIFEST C:\Users\Pablo\Downloads\visual_repos\RegalosDulcesSolution\RegalosDulcesBot\.wwebjs_auth\session\Default\Service Worker\Database/MANIFEST-000001
-2025/08/02-13:21:39.949 330 Recovering log #3
-2025/08/02-13:21:39.949 330 Reusing old log C:\Users\Pablo\Downloads\visual_repos\RegalosDulcesSolution\RegalosDulcesBot\.wwebjs_auth\session\Default\Service Worker\Database/000003.log 
+2025/08/05-14:16:36.981 3bb8 Creating DB C:\Users\Pablo\Downloads\visual_repos\RegalosDulcesSolution\RegalosDulcesBot\.wwebjs_auth\session\Default\Service Worker\Database since it was missing.
+2025/08/05-14:16:37.004 3bb8 Reusing MANIFEST C:\Users\Pablo\Downloads\visual_repos\RegalosDulcesSolution\RegalosDulcesBot\.wwebjs_auth\session\Default\Service Worker\Database/MANIFEST-000001

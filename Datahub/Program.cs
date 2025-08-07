@@ -18,6 +18,8 @@ namespace Datahub
             app.MapCategoriaEndPoint()
                .MapInventarioEndPoint()
                .MapWsGroupEndPoint()
+               .MapMensajeEndPoint()
+               .MapRecordatorioEndPoint()
                .MapTamanoEndPoint();
 
             app.Run();

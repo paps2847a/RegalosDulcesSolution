@@ -20,6 +20,27 @@
             public static string Count(string baseUri) => $"{baseUri}/inventario/count";
         }
 
+        public static class Mensaje
+        {
+            public static string Get(string baseUri) => $"{baseUri}/mensaje/getall";
+            public static string GetItem(string baseUri, int Id) => $"{baseUri}/mensaje/get/{Id}";
+            public static string AddItem(string baseUri) => $"{baseUri}/mensaje/new";
+            public static string UpdateItem(string baseUri) => $"{baseUri}/mensaje/upd";
+            public static string DeleteItem(string baseUri) => $"{baseUri}/mensaje/del";
+            public static string Count(string baseUri) => $"{baseUri}/mensaje/count";
+        }
+
+        public static class Recordatorio
+        {
+            public static string Get(string baseUri) => $"{baseUri}/recordatorio/getall";
+            public static string SendTestMsg(string baseUri) => $"{baseUri}/recordatorio/sendtestmsg";
+            public static string GetItem(string baseUri, int Id) => $"{baseUri}/recordatorio/get/{Id}";
+            public static string AddItem(string baseUri) => $"{baseUri}/recordatorio/new";
+            public static string UpdateItem(string baseUri) => $"{baseUri}/recordatorio/upd";
+            public static string DeleteItem(string baseUri) => $"{baseUri}/recordatorio/del";
+            public static string Count(string baseUri) => $"{baseUri}/recordatorio/count";
+        }
+
         public static class Categoria
         {
             public static string Get(string baseUri) => $"{baseUri}/categoria/getall";
@@ -38,6 +59,17 @@
             public static string UpdateItem(string baseUri) => $"{baseUri}/tamano/upd";
             public static string DeleteItem(string baseUri) => $"{baseUri}/tamano/del";
             public static string Count(string baseUri) => $"{baseUri}/tamano/count";
+        }
+
+        public static class WsGroup
+        {
+            public static string Get(string baseUri) => $"{baseUri}/wsgroup/getall";
+            public static string Sync(string baseUri) => $"{baseUri}/wsgroup/sync";
+            public static string GetItem(string baseUri, int Id) => $"{baseUri}/wsgroup/get/{Id}";
+            public static string AddItem(string baseUri) => $"{baseUri}/wsgroup/new";
+            public static string UpdateItem(string baseUri) => $"{baseUri}/wsgroup/upd";
+            public static string DeleteItem(string baseUri) => $"{baseUri}/wsgroup/del";
+            public static string Count(string baseUri) => $"{baseUri}/wsgroup/count";
         }
 
     }

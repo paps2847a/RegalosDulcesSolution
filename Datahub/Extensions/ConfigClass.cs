@@ -2,6 +2,7 @@
 using DataPersistance;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.IO.Compression;
 
 namespace Datahub.Extensions
@@ -64,6 +65,14 @@ namespace Datahub.Extensions
             services.AddScoped<IInventarioService, InventarioService>();
             services.AddScoped<ICategoriaService, CategoriaService>();
             services.AddScoped<IWsGroupService, WsGroupService>();
+            services.AddScoped<IMensajeService, MensajeService>();
+            services.AddScoped<IRecordatorioService, RecordatorioService>();
+
+
+            services.AddHttpClient("DatahubWsBot", (client) =>
+            {
+                client.Timeout = TimeSpan.FromSeconds(40);
+            });
 
             return services;
         }

@@ -1,7 +1,10 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const packageJson = require('./package-lock.json');
 const { SendPostPayloads, sleep } = require('./utilities/utilsProp.js'); // Assuming this is the correct path to your utility function
+const express = require('express');
+const app = express();
+
+const packageJson = require('./package-lock.json');
 const apiUrl = packageJson.apiUrl || 'http://localhost:3000'; // Default to localhost if not specified
 
 const client = new Client({
@@ -9,12 +12,6 @@ const client = new Client({
 });
 
 client.on('ready', async () => {
-
-    //Con esto deberia de hacer un endpoint api para sincronizar datos de grupos con los de la db
-    let contacts = await client.getContacts();
-    let groups = contacts.filter(contact => contact.id.user.includes("-"));
-    await SendPostPayloads(apiUrl, 'wsgroup', 'new-api', groups);
-
     console.log('Client is ready!');
 });
 
@@ -69,3 +66,37 @@ client.on('qr', qr => {
 });
 
 client.initialize();
+
+//SERVIDOR EXPRESS
+
+//MIDDLEWARE DE JSON
+app.use(express.json());
+
+app.post('/wsbot/sendwsmsg', async (req, res) => {
+    let { groupsIds, msg } = req.body.parameters;
+    let groupsArray = groupsIds.split('|');
+    if(groupsArray.length === 0 || !msg)
+        return res.status(400).json({ message: 'Faltan datos necesarios.' });
+
+    for (let groupId of groupsArray) {
+        let chat = await client.getChatById(groupId);
+        chat.sendMessage(msg);
+
+        await sleep(1000); // Espera 1 segundo entre mensajes para evitar problemas de rate limiting
+    }
+
+    return res.status(200).json({ message: 'Mensajes enviados correctamente.' });
+});
+
+app.get('/wsbot/getusergroups', async (req, res) => {
+    let contacts = await client.getContacts();
+    let groups = contacts.filter(contact => contact.id.user.includes("-"));
+    if(groups.length === 0)
+        return res.status(404).json({ message: 'No se encontraron grupos.' });
+
+    return res.status(200).json(groups);
+});
+
+app.listen(4010, () => {
+    console.log('El servidor esta corriendo en el puerto 4010');
+});

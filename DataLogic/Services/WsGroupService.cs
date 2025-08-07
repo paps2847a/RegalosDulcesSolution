@@ -80,7 +80,31 @@ namespace DataLogic.Services
                 return await _svc.GetAllAsync();
 
             string _op = filter.parameters.ContainsKey("op") ? filter.parameters["op"].ToString() : "-";
-            string _val = filter.parameters.ContainsKey("data") ? filter.parameters["val"].ToString() : "-";
+            string _val = filter.parameters.ContainsKey("data") ? filter.parameters["data"].ToString() : "-";
+
+            if(_op == "GetRegisteredGroups")
+            {
+                if (string.IsNullOrEmpty(_val))
+                    return await _svc.GetAllAsync();
+
+                var idGrps = _val.Split('|').ToList();
+                if (idGrps.Count == 0)
+                    return [];
+
+                return await _svc.GetAllAsync(x => idGrps.Contains(x.IdWsGrp));
+            }
+
+            if(_op == "GetGroupsById")
+            {
+                if (string.IsNullOrEmpty(_val))
+                    return [];
+
+                var idGrps = _val.Split(',').Select(int.Parse).ToList();
+                if(idGrps.Count == 0)
+                    return [];
+
+                return await _svc.GetAllAsync(x => idGrps.Contains(x.IdGrp));
+            }
 
             return Enumerable.Empty<WsGroup>();
         }

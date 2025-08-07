@@ -65,6 +65,22 @@
                     <span class="nav-link-text" data-i18n="">Inventario</span>
                 </a>
             </li>
+            <li class="nav-item @Html.IsParentActive(["Recordatorio"], ["Index", "Crud"])">
+                <a href="@Url.Action("Index", "Recordatorio")" title="Blog Lists" data-filter-tags="">
+                    <svg class="sa-icon sa-thin">
+                        <use href="../../../../img/sprite.svg#book"></use>
+                    </svg>
+                    <span class="nav-link-text" data-i18n="">Mensajes de Publicidad</span>
+                </a>
+            </li>
+            <li class="nav-item @Html.IsParentActive(["WsGroup"], ["Index", "Crud"])">
+                <a href="@Url.Action("Index", "WsGroup")" title="Blog Lists" data-filter-tags="">
+                    <svg class="sa-icon sa-thin">
+                        <use href="../../../../img/sprite.svg#book"></use>
+                    </svg>
+                    <span class="nav-link-text" data-i18n="">Grupos de WhatsApp</span>
+                </a>
+            </li>
             <li class="nav-item @Html.IsParentActive(["Tamano"], ["Index", "Crud"])">
                 <a href="@Url.Action("Index", "Tamano")" title="Blog Lists" data-filter-tags="">
                     <svg class="sa-icon sa-thin">

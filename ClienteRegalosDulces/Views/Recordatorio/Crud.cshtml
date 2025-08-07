@@ -1,0 +1,177 @@
+﻿@model DataModel.Tables.Recordatorio
+@{
+    ViewData["Title"] = "Recordatorio Registro/Edicion";
+    var idGrpsStr = Model.IdGrps.Split(',');
+    var idGrps = Array.Empty<int>() ;
+
+    if (idGrpsStr.Length != 0)
+        idGrps = idGrpsStr.Select(int.Parse).ToArray();
+}
+
+<nav class="app-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb ms-0">
+        <li class="breadcrumb-item">Recordatorio</li>
+        <li class="breadcrumb-item" aria-current="page">Datos General</li>
+    </ol>
+</nav>
+<h1 class="subheader-title position-relative">
+    Datos Generales
+    <small> detalle de datos de Recordatorio</small>
+</h1>
+<div class="main-content">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="Save" asp-controller="Recordatorio" method="post">
+                        <input type="hidden" asp-for="IdRecord" value="@Model.IdRecord">
+                        <input type="hidden" asp-for="IdMsg" value="@Model.IdMsg">
+                        <input type="hidden" asp-for="IdGrps" value="@Model.IdGrps">
+                        <input type="hidden" asp-for="Token" value="@Model.Token">
+                        <input type="hidden" asp-for="RegDat" value="@Model.RegDat">
+                        <div class="row mb-3">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="form-label">Grupos a donde se va publicitar</label>
+                                    <select class="form-control" name="grps" multiple id="grps">
+                                        @foreach (DataModel.Tables.WsGroup item in ViewBag.groups)
+                                        {
+                                            if (idGrps.Length != 0)
+                                            {
+                                                if(idGrps.Contains(item.IdGrp))
+                                                {
+                                                    <option value="@item.IdGrp" selected>@item.GrpNam</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.IdGrp">@item.GrpNam</option>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.IdGrp">@item.GrpNam</option>
+                                            }
+
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Hora de publicacion</label>
+                                    <input type="time" id="timetoput" asp-for="HourRecord" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="msg" class="form-label">Mensaje</label>
+                                    <textarea class="form-control" id="msg" name="msg" rows="8">@(Model.Mensaje != null ? Model.Mensaje.DesMsg : "")</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label class="form-label">Estado</label>
+                                    <select class="form-control" id="IsAct" asp-for="IsAct">
+                                        @if (Model.IsAct.Value)
+                                        {
+                                            <option selected value="true">Activo</option>
+                                            <option value="false">Inactivo</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="true">Activo</option>
+                                            <option selected value="false">Inactivo</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" mb-3>
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit">Guardar</button>
+                                    @if(Model.IdRecord > 0)
+                                    {
+                                        <button class="btn btn-success" id="sendmsgtest" type="button">Enviar Mensaje como prueba a grupos</button>
+                                    }
+                                    <a href="@Url.Action("Index", "Recordatorio")" class="btn btn-secondary">Cancelar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="~/scripts/thirdparty/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/scripts/thirdparty/flatpick/flatpickr.min.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/scripts/thirdparty/select2/js/select2.full.min.js"></script>
+    <script src="~/scripts/thirdparty/flatpick/flatpickr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#timetoput").flatpickr({
+                              enableTime: true,
+                              noCalendar: true,
+                              dateFormat: "H:i" 
+            });
+
+            $("#sendmsgtest").click(async function(){
+
+                if($("#msg").val() == "" || $("#msg").val() == null){
+                    Swal.fire("Error", "El mensaje no puede estar vacio", "error");
+                    return;
+                }
+
+                if($("#grps").val() == "" || $("#grps").val() == null){
+                    Swal.fire("Error", "Tiene que tener al menos un grupo al cual enviar el mensaje", "error");
+                    return;
+                }
+
+                Swal.fire("Info", "Eniando mensajes a grupos", "info");
+                Swal.showLoading();
+                let data = {
+                    parameters: {
+                        op: "GetGroupsById",
+                        msg: $("#msg").val(),
+                        data: $("#grps").val().join(",")
+                    }
+                };
+
+                let settings = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                };
+
+                let response = await fetch("@Url.Action("SendTestMessage", "Recordatorio")", settings);
+                let { rs, msg } = await response.json();
+
+                Swal.hideLoading();
+                Swal.clickConfirm();
+
+                if (rs == "ok") {
+                    Swal.fire("Exito", msg, "success");
+                } else {
+                    Swal.fire("Error", msg, "error");
+                }
+            });
+
+            $('#grps').select2();
+        });
+    </script>
+}

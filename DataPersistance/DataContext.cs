@@ -13,5 +13,7 @@ namespace DataPersistance
         public DbSet<Inventario> Inventarios { get; set; }
         public DbSet<Tamano> Tamanos { get; set; }
         public DbSet<WsGroup> WsGroups { get; set; }
+        public DbSet<Mensaje> Mensajes { get; set; }
+        public DbSet<Recordatorio> Recordatorios { get; set; }
     }
 }

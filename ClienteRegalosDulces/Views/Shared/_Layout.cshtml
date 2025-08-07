@@ -443,7 +443,7 @@
         <!-- Core scripts -->
         <script src="~/scripts/smartApp.js"></script>
         <script src="~/scripts/smartNavigation.js"></script>
-        <script src="~/scripts/smartFilter.js"></script>
+@*         <script src="~/scripts/smartFilter.js"></script> *@
         <script src="~/scripts/thirdparty/bootstrap/bootstrap.bundle.js"></script>
         <script src="~/scripts/thirdparty/sweetalert/sweetalert2.all.min.js"></script>
         <script src="~/scripts/jquery-3.7.1.min.js"></script>
@@ -485,85 +485,85 @@
                 Waves.init();
             }
             /* Initialize the list filter : listFilter.js */
-            document.addEventListener('DOMContentLoaded', function()
-            {
-                /* initialize smartApp.js */
-                appDOM.checkActiveStyles().debug(false);
-                /* Initialize the list filter */
-                var listFilter = new ListFilter('#js-nav-menu', '#searchInput',
-                {
-                    messageSelector: '.js-filter-message',
-                    debounceWait: 200,
-                    minLength: 2,
-                    caseSensitive: false,
-                    onFilter: function(filter)
-                    {
-                        console.log('Filtering with:', filter);
-                    },
-                    onReset: function()
-                    {
-                        console.log('Filter reset');
-                    }
-                });
-                /* Panel Sorting : sortable.js
+            // document.addEventListener('DOMContentLoaded', function()
+            // {
+            //     /* initialize smartApp.js */
+            //     appDOM.checkActiveStyles().debug(false);
+            //     /* Initialize the list filter */
+            //     var listFilter = new ListFilter('#js-nav-menu', '#searchInput',
+            //     {
+            //         messageSelector: '.js-filter-message',
+            //         debounceWait: 200,
+            //         minLength: 2,
+            //         caseSensitive: false,
+            //         onFilter: function(filter)
+            //         {
+            //             console.log('Filtering with:', filter);
+            //         },
+            //         onReset: function()
+            //         {
+            //             console.log('Filter reset');
+            //         }
+            //     });
+            //     /* Panel Sorting : sortable.js
 
-                   Initialize Sortable for each column
-                   turn off sortable by adding "sortable-off" class to main-content before init
-                   this will however still load any saved state
-                   remove !mobileOperator() to enable sortable on mobile */
-                const columns = document.querySelectorAll('.main-content:not(.sortable-off) > .row:not(.sortable-off) > [class^="col-"]');
-                /* Check if columns exist and Sortable is defined and mobileOperator is false */
-                if (columns.length > 0 && typeof Sortable !== 'undefined' && !mobileOperator())
-                {
-                    /* Initialize Sortable for each column */
-                    columns.forEach(column =>
-                    {
-                        Sortable.create(column,
-                        {
-                            animation: 150,
-                            ghostClass: 'panel-selected',
-                            handle: '.panel-hdr > h2',
-                            filter: '.panel-locked',
-                            draggable: '.panel:not(.panel-locked):not(.panel-fullscreen)',
-                            group: 'sapanels',
-                            onEnd: function()
-                            {
-                                savePanelState();
-                            }
-                        });
-                    });
-                    /* Add class to app-content if sortable is active */
-                    document.querySelector('.main-content').classList.add('sortable-active');
-                }
-                else
-                {
-                    document.querySelector('.main-content').classList.add('sortable-inactive');
-                }
-                /* Customized Scrollbar : smartSlimScroll.js */
-                /* Initialize smartSlimScroll if not on mobile - In mobile we use native scrollbar for better UX */
-                if (!mobileOperator())
-                {
-                    /* Initialize smartSlimScroll */
-                    new smartSlimScroll('.custom-scroll',
-                    {
-                        height: '100%',
-                        size: '4px',
-                        position: 'right',
-                        color: '#000',
-                        alwaysVisible: false,
-                        railVisible: true,
-                        railColor: '#222',
-                        railOpacity: 0,
-                        wheelStep: 10,
-                        offsetX: '6px',
-                        offsetY: '8px'
-                    });
-                }
-                else
-                {
-                    document.getElementsByTagName('BODY')[0].classList.add('no-slimscroll');
-                }
-            });
+            //        Initialize Sortable for each column
+            //        turn off sortable by adding "sortable-off" class to main-content before init
+            //        this will however still load any saved state
+            //        remove !mobileOperator() to enable sortable on mobile */
+            //     const columns = document.querySelectorAll('.main-content:not(.sortable-off) > .row:not(.sortable-off) > [class^="col-"]');
+            //     /* Check if columns exist and Sortable is defined and mobileOperator is false */
+            //     if (columns.length > 0 && typeof Sortable !== 'undefined' && !mobileOperator())
+            //     {
+            //         /* Initialize Sortable for each column */
+            //         columns.forEach(column =>
+            //         {
+            //             Sortable.create(column,
+            //             {
+            //                 animation: 150,
+            //                 ghostClass: 'panel-selected',
+            //                 handle: '.panel-hdr > h2',
+            //                 filter: '.panel-locked',
+            //                 draggable: '.panel:not(.panel-locked):not(.panel-fullscreen)',
+            //                 group: 'sapanels',
+            //                 onEnd: function()
+            //                 {
+            //                     savePanelState();
+            //                 }
+            //             });
+            //         });
+            //         /* Add class to app-content if sortable is active */
+            //         document.querySelector('.main-content').classList.add('sortable-active');
+            //     }
+            //     else
+            //     {
+            //         document.querySelector('.main-content').classList.add('sortable-inactive');
+            //     }
+            //     /* Customized Scrollbar : smartSlimScroll.js */
+            //     /* Initialize smartSlimScroll if not on mobile - In mobile we use native scrollbar for better UX */
+            //     if (!mobileOperator())
+            //     {
+            //         /* Initialize smartSlimScroll */
+            //         new smartSlimScroll('.custom-scroll',
+            //         {
+            //             height: '100%',
+            //             size: '4px',
+            //             position: 'right',
+            //             color: '#000',
+            //             alwaysVisible: false,
+            //             railVisible: true,
+            //             railColor: '#222',
+            //             railOpacity: 0,
+            //             wheelStep: 10,
+            //             offsetX: '6px',
+            //             offsetY: '8px'
+            //         });
+            //     }
+            //     else
+            //     {
+            //         document.getElementsByTagName('BODY')[0].classList.add('no-slimscroll');
+            //     }
+            // });
             /* Initialize tooltips: bootstrap.bundle.js */
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
             var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl)
