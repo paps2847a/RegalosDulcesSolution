@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel", "DataModel\Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLogic", "DataLogic\DataLogic.csproj", "{1A467727-BA42-4917-A043-23A285FF7301}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "RegalosDulcesBot", "RegalosDulcesBot\RegalosDulcesBot.esproj", "{CC9ACEAC-620F-8A61-4331-04C3648024DA}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "RegalosBot", "RegalosBot\RegalosBot.esproj", "{BB30C7C3-1859-8B58-BCF0-88642613ED02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,12 +41,12 @@ Global
 		{1A467727-BA42-4917-A043-23A285FF7301}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A467727-BA42-4917-A043-23A285FF7301}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A467727-BA42-4917-A043-23A285FF7301}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CC9ACEAC-620F-8A61-4331-04C3648024DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC9ACEAC-620F-8A61-4331-04C3648024DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC9ACEAC-620F-8A61-4331-04C3648024DA}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{CC9ACEAC-620F-8A61-4331-04C3648024DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC9ACEAC-620F-8A61-4331-04C3648024DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CC9ACEAC-620F-8A61-4331-04C3648024DA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BB30C7C3-1859-8B58-BCF0-88642613ED02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB30C7C3-1859-8B58-BCF0-88642613ED02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB30C7C3-1859-8B58-BCF0-88642613ED02}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BB30C7C3-1859-8B58-BCF0-88642613ED02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB30C7C3-1859-8B58-BCF0-88642613ED02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB30C7C3-1859-8B58-BCF0-88642613ED02}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
