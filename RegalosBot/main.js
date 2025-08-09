@@ -1,6 +1,6 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const { SendPostPayloads, sleep } = require('./utilities/utilsProp.js'); // Assuming this is the correct path to your utility function
+const { SendPostPayloads, sleep, removeEmojis } = require('./utilities/utilsProp.js'); // Assuming this is the correct path to your utility function
 
 const packageJson = require('./package.json');
 const apiUrl = packageJson.apiUrl;

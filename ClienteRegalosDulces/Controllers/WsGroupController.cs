@@ -36,7 +36,7 @@ namespace ClienteRegalosDulces.Controllers
             try
             {
                 var r = await _svc.SyncGroups();
-                return Ok(new {  });
+                return Ok(new { rs = r.Success ? "ok": "fail", msg = r.Message  });
             }
             catch(Exception ex)
             {

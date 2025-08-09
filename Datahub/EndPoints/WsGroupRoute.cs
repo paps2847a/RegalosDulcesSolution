@@ -68,6 +68,9 @@ namespace Datahub.EndPoints
                             GrpNam = x.name.ToString() ?? ""
                         });
 
+                    if(!newGroups.Any())
+                        return Results.Ok(new Responses() { Message = "No Groups to Sync"});
+
                     var r = await _svc.AddRange(newGroups);
                     if(!r)
                         return Results.Ok(new Responses() { Success = false, Message = "WsGroup not found", StatusCode = 404 });

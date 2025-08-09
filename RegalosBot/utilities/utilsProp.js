@@ -37,9 +37,17 @@ async function SendPostPayloads(apiUrl, entity, endpoint, data) {
     }
 }
 
+function removeEmojis(str) {
+    return str.replace(
+        /([\u2700-\u27BF]|[\uE000-\uF8FF]|[\u2011-\u26FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD00-\uDDFF])/g,
+        ''
+    );
+}
+
 // --- Exportación de las funciones ---
 // Exportamos un objeto que contiene ambas funciones
 module.exports = {
     sleep: sleep,
-    SendPostPayloads: SendPostPayloads
+    SendPostPayloads: SendPostPayloads,
+    removeEmojis: removeEmojis
 };

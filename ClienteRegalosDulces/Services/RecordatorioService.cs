@@ -127,7 +127,7 @@ namespace ClienteRegalosDulces.Services
         {
             try
             {
-                string uri = ApiUrl.Recordatorio.UpdateItem(_configuration["ApiBaseUrl"].ToString());
+                string uri = ApiUrl.Recordatorio.DeleteItem(_configuration["ApiBaseUrl"].ToString());
                 var content = new StringContent(JsonSerializer.Serialize(row), Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync(uri, content);
                 var responseContent = await response.Content.ReadAsStringAsync();

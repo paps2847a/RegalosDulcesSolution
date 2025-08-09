@@ -64,12 +64,23 @@
 
            $("#sinc").click(async function(){
 
+               Swal.fire("Buscando", "Por favor espere", "info");
+               Swal.showLoading();
+
                let response = await fetch("@Url.Action("SyncContacts", "WsGroup")");
                if(!response.ok)
                 return;
 
-               let { rs, msg } = await response.json();
+               Swal.hideLoading();
+               Swal.clickConfirm();
 
+               let { rs, msg } = await response.json();
+               if(rs != "ok"){
+                   Swal.fire("Hubo un error...", msg, "error");
+                   return;
+               }
+
+               Swal.fire("Exito!", msg, "success");
            });
 
            let table = $('#tablaBase').DataTable({
