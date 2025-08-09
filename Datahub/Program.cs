@@ -11,7 +11,7 @@ namespace Datahub
 
             builder.Services.AddDataContext(builder.Configuration)
                             .AddCustomMvcServices(builder.Configuration)
-                            .AddServices();
+                            .AddServices(builder.Configuration);
 
             var app = builder.Build();
 

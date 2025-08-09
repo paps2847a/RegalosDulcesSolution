@@ -1,8 +1,9 @@
 ﻿@model DataModel.Tables.Recordatorio
 @{
     ViewData["Title"] = "Recordatorio Registro/Edicion";
-    var idGrpsStr = Model.IdGrps.Split(',');
-    var idGrps = Array.Empty<int>() ;
+
+    var idGrpsStr = Model.IdGrps == "-" ? [] : Model.IdGrps.Split(',');
+    var idGrps = Array.Empty<int>();
 
     if (idGrpsStr.Length != 0)
         idGrps = idGrpsStr.Select(int.Parse).ToArray();

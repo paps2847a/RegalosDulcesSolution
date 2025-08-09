@@ -24,7 +24,7 @@ client.on('message', async (msg) => {
             "4. /contacto - Para contactar con un administrador."
         ];
         await msg.reply(`Bienvenido a regalos bot, soy el asistente automatico.Te presento las opciones que puedes usar:`);
-        sleep(700);
+        await Bun.sleep(1000);
         await msg.reply(opciones.join('\n'));
     }
 
@@ -38,7 +38,7 @@ client.on('message', async (msg) => {
         }
         let precios = tamanosTortas.map(tamano => `${tamano.desTam} - $${tamano.vendTam}`).join('\n');
         await msg.reply(`Estos son los precios de los biscochos por tamano:\n${precios}`);
-        sleep(700);
+        await Bun.sleep(1000);
         await msg.reply(`Si quieres hacer un pedido, por favor escribe /orden.`);
     }
 
@@ -68,25 +68,28 @@ client.initialize();
 const serv = Bun.serve({
     port: 4010,
     routes: {
-        '/wsbot/getusergroups': async (req) => {
-            let contacts = await client.getContacts();
-            let groups = contacts.filter(contact => contact.id.user.includes("-"));
+        '/wsbot/getusergroups': {
+                GET: async (req) => {
+                    let contacts = await client.getContacts();
+                    let groups = contacts.filter(contact => contact.id.user.includes("-"));
 
-            if(groups.length === 0)
-                return Response.json({ message: 'No se encontraron grupos.' });
+                    if(groups.length === 0)
+                        return Response.json({ message: 'No se encontraron grupos.' });
 
-             return Response.json(groups);
+                    return Response.json(groups);
+            }
         },
-        '/wsbot/sendwsmsg': async (req) => {
+        '/wsbot/sendwsmsg': {
             POST: async (req) => {
                 let { groupsIds, msg } = await req.json();
+                
                 let groupsArray = groupsIds.split('|');
                 if(groupsArray.length === 0 || !msg)
                     return Response.json({ message: 'Faltan datos necesarios.' }, { status: 400 });
 
                 for (let groupId of groupsArray) {
                     let chat = await client.getChatById(groupId);
-                    chat.sendMessage(msg);
+                    await chat.sendMessage(msg);
 
                     await Bun.sleep(1000); // Espera 1 segundo entre mensajes para evitar problemas de rate limiting
                 }

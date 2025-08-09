@@ -14,11 +14,7 @@ namespace Datahub.EndPoints
             {
                 var client = _factory.CreateClient("DatahubWsBot");
 
-                var url = _config.GetValue<string>("ApiBotUrl");
-                if (string.IsNullOrEmpty(url))
-                    return [];
-
-                var response = await client.GetAsync($"{url}getusergroups");
+                var response = await client.GetAsync("getusergroups");
                 if (!response.IsSuccessStatusCode)
                     return [];
 

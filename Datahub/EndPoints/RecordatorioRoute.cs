@@ -19,38 +19,32 @@ namespace Datahub.EndPoints
                 return Results.Ok(new Responses() { Data = Recordatorios });
             });
 
-            EndPointData.MapPost("sendtestmsg", async ([FromBody] Filter data, IConfiguration _config, IWsGroupService _svcWsGroup, IHttpClientFactory _factory) =>
+            EndPointData.MapPost("sendtestmsg", async ([FromBody] Filter data, IWsGroupService _svcWsGroup, IHttpClientFactory _factory) =>
             {
                 try
                 {
-                    var r = await _svcWsGroup.GetAll(data);
-                    if (!r.Any())
-                        return Results.Ok(new Responses() { Success = false, Message = "Error al obrener los grupos" });
+                    var grupos = await _svcWsGroup.GetAll(data);
+                    if (!grupos.Any())
+                        return Results.NotFound(new Responses { Success = false, Message = "No se encontraron grupos", StatusCode = 404 });
+
+                    if (!data.parameters.TryGetValue("msg", out var msgObj) || msgObj is null)
+                        return Results.BadRequest(new Responses { Success = false, Message = "Falta el parámetro 'msg'", StatusCode = 400 });
 
                     var client = _factory.CreateClient("DatahubWsBot");
+                    var groupsIdsStr = string.Join('|', grupos.Select(x => x.IdWsGrp));
+                    var payload = new { groupsIds = groupsIdsStr, msg = msgObj.ToString() };
+                    var strCont = JsonSerializer.Serialize(payload);
 
-                    var url = _config.GetValue<string>("ApiBotUrl");
-                    if (string.IsNullOrEmpty(url))
-                        return Results.Ok(new Responses() { Success = false, Message = "Error al obrener los grupos" });
-
-                    var groupsIds = string.Join('|', r.Select(x => x.IdWsGrp));
-                    var strCont = JsonSerializer.Serialize(new Filter()
-                        {
-                            parameters = {
-                            { "groupsIds", groupsIds }, { "msg", data.parameters["msg"].ToString() }
-                        }
-                    });
-
-                    var response = await client.PostAsync($"{url}sendwsmsg", new StringContent(strCont, System.Text.Encoding.UTF8, "application/json"));
+                    var response = await client.PostAsync("sendwsmsg", new StringContent(strCont, System.Text.Encoding.UTF8, "application/json"));
                     if (!response.IsSuccessStatusCode)
-                        return Results.Ok(new Responses() { Success = false, Message = "Error al enviar el mensaje" });
+                        return Results.BadRequest(new Responses { Success = false, Message = "Error al enviar el mensaje", StatusCode = 400 });
 
-                    return Results.Ok(new Responses() { Message = "Exito al enviar mensaje" });
+                    return Results.Ok(new Responses { Success = true, Message = "Éxito al enviar mensaje" });
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     ex.LogEx();
-                    return Results.Ok(new Responses() { Success = false, Message = "Error al enviar el mensaje" });
+                    return Results.BadRequest(new Responses { Success = false, Message = "Error inesperado al enviar el mensaje", StatusCode = 500 });
                 }
             });
 

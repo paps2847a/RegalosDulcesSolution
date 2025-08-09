@@ -1,9 +1,12 @@
-﻿using DataLogic.Services;
+﻿using Datahub.BackgroundJobs;
+using DataLogic.Services;
 using DataPersistance;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Options;
 using System.IO.Compression;
+using System.Runtime.CompilerServices;
 
 namespace Datahub.Extensions
 {
@@ -24,6 +27,14 @@ namespace Datahub.Extensions
         public static IServiceCollection AddCustomMvcServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions();
+
+            services.AddHybridCache(options =>
+            {
+                options.DefaultEntryOptions = new HybridCacheEntryOptions
+                {
+                    LocalCacheExpiration = TimeSpan.FromMinutes(3),
+                };
+            });
 
             services.AddControllers()
                 .AddJsonOptions(options =>
@@ -59,8 +70,10 @@ namespace Datahub.Extensions
             return services;
         }
 
-        public static IServiceCollection AddServices(this IServiceCollection services)
+        public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration _config)
         {
+            services.AddHostedService<PeriodicMsgBackground>();
+
             services.AddScoped<ITamanoService, TamanoService>();
             services.AddScoped<IInventarioService, InventarioService>();
             services.AddScoped<ICategoriaService, CategoriaService>();
@@ -68,10 +81,14 @@ namespace Datahub.Extensions
             services.AddScoped<IMensajeService, MensajeService>();
             services.AddScoped<IRecordatorioService, RecordatorioService>();
 
+            var url = _config.GetValue<string>("ApiBotUrl");
+            if(string.IsNullOrEmpty(url))
+                throw new ArgumentNullException("No se encontró la URL del bot en la configuración");
 
             services.AddHttpClient("DatahubWsBot", (client) =>
             {
                 client.Timeout = TimeSpan.FromSeconds(40);
+                client.BaseAddress = new Uri(url);
             });
 
             return services;

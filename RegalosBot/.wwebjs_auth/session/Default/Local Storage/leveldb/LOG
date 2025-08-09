@@ -1,3 +1,6 @@
-2025/08/08-22:00:17.097 308c Reusing MANIFEST C:\Users\Pablo\Downloads\visual_repos\RegalosDulcesSolution\RegalosBot\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
-2025/08/08-22:00:17.097 308c Recovering log #4
-2025/08/08-22:00:17.097 308c Reusing old log C:\Users\Pablo\Downloads\visual_repos\RegalosDulcesSolution\RegalosBot\.wwebjs_auth\session\Default\Local Storage\leveldb/000004.log 
+2025/08/09-12:25:32.547 2498 Reusing MANIFEST C:\Users\Pablo\Downloads\visual_repos\RegalosDulcesSolution\RegalosBot\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2025/08/09-12:25:32.547 2498 Recovering log #8
+2025/08/09-12:25:32.548 2498 Reusing old log C:\Users\Pablo\Downloads\visual_repos\RegalosDulcesSolution\RegalosBot\.wwebjs_auth\session\Default\Local Storage\leveldb/000008.log 
+2025/08/09-12:57:57.278 24d4 Level-0 table #11: started
+2025/08/09-12:57:57.338 24d4 Level-0 table #11: 13957 bytes OK
+2025/08/09-12:57:57.351 24d4 Delete type=0 #8

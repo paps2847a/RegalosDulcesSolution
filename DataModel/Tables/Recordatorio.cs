@@ -12,7 +12,7 @@ namespace DataModel.Tables
         public int? IdMsg { get; set; }
         [MaxLength(80)]
         public string IdGrps { get; set; } = "-";
-        public TimeSpan? HourRecord { get; set; }
+        public TimeSpan HourRecord { get; set; }
         public bool? IsAct { get; set; } = true;
         public DateTime? RegDat { get; set; } = DateTime.UtcNow;
         [MaxLength(80)]
