@@ -1,9 +1,15 @@
+'use strict';
+
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const { SendPostPayloads, sleep, removeEmojis } = require('./utilities/utilsProp.js'); // Assuming this is the correct path to your utility function
+const cheerio = require('cheerio');
+const { SendPostPayloads } = require('./utilities/utilsProp.js');
 
 const packageJson = require('./package.json');
 const apiUrl = packageJson.apiUrl;
+const PORT = 4010;
+
+let fetchedData = null;
 
 const client = new Client({
     authStrategy: new LocalAuth()
@@ -42,11 +48,6 @@ client.on('message', async (msg) => {
         await msg.reply(`Si quieres hacer un pedido, por favor escribe /orden.`);
     }
 
-    if(msg.body === '/orden' || msg.body === 'orden')
-    {
-        await msg.reply(`Por favor, describe como quieres tu torta y te ayudare a crearla.`);
-    }
-
     if(msg.body === '/lista' || msg.body === 'lista')
     {
     }
@@ -66,8 +67,55 @@ client.on('qr', qr => {
 client.initialize();
 
 const serv = Bun.serve({
-    port: 4010,
+    port: PORT,
     routes: {
+        '/dolar/now':{
+            GET: async (req) => {
+                if(fetchedData == null || (Date.now() - fetchedData.timestamp >= 3600000)){
+                    let response = await fetch('https://www.bcv.org.ve/', {
+                        tls: {
+                            rejectUnauthorized: false // Permite conexiones a sitios con certificados no verificados
+                        }
+                    });
+                    if(!response.ok)
+                        return Response.json({ message: 'Error al obtener los datos del BCV' }, { status: 500 });
+
+                    let html = await response.text();
+                    if(html.length === 0)
+                        return Response.json({ message: 'Error al obtener los datos del BCV' }, { status: 500 });
+
+                    const $ = cheerio.load(html);
+                    const dolarValor = parseFloat(
+                        $("#dolar > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > strong:nth-child(1)")
+                        .text()
+                        .trimStart()
+                        .trimEnd()
+                        .replace(",", ".")
+                    ).toFixed(2);
+                                    
+                    const fecha = $(".pull-right > span:nth-child(1)")
+                                .text()
+                                .trimStart()
+                                .trimEnd();
+
+                    fetchedData = {
+                        valor: dolarValor,
+                        fecha: fecha,
+                        timestamp: Date.now()
+                    };
+
+                    return Response.json({
+                        valor: dolarValor,
+                        fecha: fecha
+                    }, { status: 200 });
+                }
+
+                return Response.json({
+                    valor: fetchedData.valor,
+                    fecha: fetchedData.fecha
+                }, { status: 200 });
+            }
+        },
         '/wsbot/getusergroups': {
                 GET: async (req) => {
                     let contacts = await client.getContacts();
@@ -81,20 +129,24 @@ const serv = Bun.serve({
         },
         '/wsbot/sendwsmsg': {
             POST: async (req) => {
-                let { groupsIds, msg } = await req.json();
+                try{
+                    let { groupsIds, msg } = await req.json();
                 
                 let groupsArray = groupsIds.split('|');
                 if(groupsArray.length === 0 || !msg)
                     return Response.json({ message: 'Faltan datos necesarios.' }, { status: 400 });
 
                 for (let groupId of groupsArray) {
-                    let chat = await client.getChatById(groupId);
-                    await chat.sendMessage(msg);
-
+                    await client.sendMessage(groupId, msg)
                     await Bun.sleep(1000); // Espera 1 segundo entre mensajes para evitar problemas de rate limiting
                 }
 
                 return Response.json({ message: 'Mensajes enviados correctamente.' });
+                }
+                catch (error) {
+                    console.error("Error al enviar el mensaje:", error);
+                    return Response.json({ message: 'Error al enviar el mensaje.' }, { status: 500 });
+                }
             }
         }
     },

@@ -4,9 +4,7 @@ using DataPersistance;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
-using Microsoft.Extensions.Options;
 using System.IO.Compression;
-using System.Runtime.CompilerServices;
 
 namespace Datahub.Extensions
 {
@@ -82,7 +80,7 @@ namespace Datahub.Extensions
             services.AddScoped<IRecordatorioService, RecordatorioService>();
 
             var url = _config.GetValue<string>("ApiBotUrl");
-            if(string.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(url))
                 throw new ArgumentNullException("No se encontró la URL del bot en la configuración");
 
             services.AddHttpClient("DatahubWsBot", (client) =>
